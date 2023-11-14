@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './style';
-import { Navbar, Hero, Team} from './components';
+import { Navbar, Hero, Team, Button} from './components';
 
 const App = () => {
   return (
