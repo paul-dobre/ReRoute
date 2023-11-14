@@ -4,11 +4,11 @@ import Button from "./Button";
 
 const Hero = () => {
   return (
-    <section className={`flex md:flex-row flex-col ${styles.paddingY} fade-in`}>
+    <section className={`flex md:flex-row flex-col`}>
       <div className="w-full">
-        <img src="/road.jpg" alt="road" className="h-screen" />
+        <img src="/road.jpg" alt="road" className="w-full" />
       </div>
-      <div className={`absolute mt-[200px] sm:px-16 px-10`}>
+      <div className={`absolute mt-[300px] sm:px-16 px-10 ml-[70px]`}>
         <h1 className="text-white font-poppins font-semibold text-[35px]">Spatial Reactive Routing Platform</h1>
         <Button label="Start Routing" color="bg-[#0A0222]" text_color="text-[#95A1F9]" border="border-[#95A1F9]"/>
       </div>
