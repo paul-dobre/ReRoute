@@ -1,6 +1,4 @@
 import React from "react";
-import styles from "./style";
-import { Navbar, Hero, Team, Button, Sponsor, Card, CardInfo, Info } from "./components";
 import Home from "./Home";
 import About from "./About";
 import { Routes, Route } from 'react-router-dom'

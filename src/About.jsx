@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from "./style";
-import { Navbar, Hero, Team, Button, Sponsor, Card, CardInfo, Info } from "./components";
+import { Navbar, AboutUs, Profile } from "./components";
+
 
 const About = () => {
   return (
@@ -12,12 +13,12 @@ const About = () => {
     </div>
     <div className={`bg-primary ${styles.flexStart}`}>
       <div className={`${styles.boxWidth}`}>
-        <Hero />
+        <AboutUs />
       </div>
     </div>
     <div className={`bg-primary ${styles.paddingX} ${styles.flexStart}`}>
       <div className={`${styles.boxWidth}`}>
-        <Sponsor/>
+        <Profile/>
       </div>
     </div>
   </div>

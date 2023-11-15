@@ -18,6 +18,7 @@ const Home = () => {
     <div className={`bg-primary ${styles.paddingX} ${styles.flexStart}`}>
       <div className={`${styles.boxWidth}`}>
         <Sponsor/>
+        <CardInfo/>
         <Info/>
       </div>
     </div>

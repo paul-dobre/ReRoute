@@ -6,6 +6,8 @@ import Sponsor from "./Sponsor";
 import Card from "./Card";
 import CardInfo from "./CardInfo";
 import Info from "./Info";
+import AboutUs from "./AboutUs";
+import Profile from "./Profile";
 
 export {
     Navbar,
@@ -16,4 +18,6 @@ export {
     Card,
     CardInfo,
     Info,
+    AboutUs,
+    Profile,
 };
