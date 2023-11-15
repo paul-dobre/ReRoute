@@ -1,12 +1,13 @@
 import React from 'react'
 
-const Card = ({label,color,text_color,border}) => {
+const Card = ({label,color,text_color,border, dynamic}) => {
   return (
-    <div className={`flex items-center justify-center border-[2px] ${border} px-[20px] 
+    <div className={`flex flex-col items-center justify-center  ${border} px-[50px] 
     ${color} my-[50px] w-[325px] h-[375px] mt-[10px] text-center rounded-xl 
-    ${text_color} font-poppins font-normal `}>
+    ${text_color} font-poppins font-semibold text-2xl`}>
+      <img className="mb-[40px] text-red-500" src={dynamic}/>
       {label}
-      Card</div>
+      </div>
   )
 }
 

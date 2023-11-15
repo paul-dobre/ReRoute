@@ -18,12 +18,8 @@ const App = () => {
       <div className={`bg-primary ${styles.paddingX} ${styles.flexStart}`}>
         <div className={`${styles.boxWidth}`}>
           <Sponsor/>
-          <Info />
-        </div>
-      </div>
-      <div className={`bg-primary ${styles.paddingX} ${styles.flexStart}`}>
-        <div className={`${styles.boxWidth}`}>
           <CardInfo/>
+          <Info />
         </div>
       </div>
     </div>
