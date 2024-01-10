@@ -20,7 +20,8 @@ const Navbar = () => {
           <a href="" className=''>Algorithm</a>
         </li>
         <li className = "text-white mr-10 hover:text-secondary">
-          <a href="" className=''>Help</a>  
+          <Link to="/help">Help</Link>
+          
         </li>  
       </ul>
     </nav>
