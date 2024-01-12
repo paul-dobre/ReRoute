@@ -8,6 +8,7 @@ import CardInfo from "./CardInfo";
 import Info from "./Info";
 import AboutUs from "./AboutUs";
 import Profile from "./Profile";
+import MapDisplay from "./MapDisplay"
 
 export {
     Navbar,
@@ -20,4 +21,5 @@ export {
     Info,
     AboutUs,
     Profile,
+    MapDisplay
 };

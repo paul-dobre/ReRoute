@@ -2,8 +2,10 @@ import React from "react";
 import Home from "./Home";
 import About from "./About";
 import Help from "./Help";
+import StartRouting from "./StartRouting";
 
 import { Routes, Route } from 'react-router-dom'
+
 
 const App = () => {
   return (
@@ -16,6 +18,9 @@ const App = () => {
       </Routes>
       <Routes>
         <Route path="/help" element={<Help />} />
+      </Routes>
+      <Routes>
+        <Route path="/startrouting" element={<StartRouting />} />
       </Routes>
 
     </div>
