@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from "./style";
-import { Navbar, MapDisplay } from "./components";
+import { Navbar, MapDisplay, MapLeaf } from "./components";
 
 const StartRouting = () => {
   return (
@@ -12,7 +12,7 @@ const StartRouting = () => {
     </div>
     <div className={`bg-primary ${styles.flexStart} justify-center`}>
       <div >
-        <MapDisplay />
+        <MapLeaf />
       </div>
     </div>
     <div className={`bg-primary ${styles.paddingX} ${styles.flexStart}`}>
