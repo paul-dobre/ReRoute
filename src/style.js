@@ -16,6 +16,13 @@ const styles = {
   
     marginX: "sm:mx-16 mx-6",
     marginY: "sm:my-16 my-6",
+
+    // navbar styles
+    navtext: "p-4 hover:rounded-full hover:bg-gray-500 duration-500 hover:border-neutral-50 text-white mr-10 ",
+    navtextmenu: "p-4 border-b border-gray-600 duration-500 hover:border-neutral-50 text-white mr-10 hover:text-secondary",
+    menu: "w-[35px] h-[35px] absolute p-0 rounded-sm transform duration-500 ",
+    navbutton: "p-4 text-primary mr-10 duration-500 hover:text-white bg-white hover:bg-secondary rounded-full hover:border-secondary hover:bg-gr",
+    
   };
   
   export const layout = {
@@ -26,6 +33,8 @@ const styles = {
     sectionImg: `flex-1 flex ${styles.flexCenter} md:ml-10 ml-0 md:mt-0 mt-10 relative`,
   
     sectionInfo: `flex-1 ${styles.flexStart} flex-col`,
+
+
   };
-  
+
   export default styles;
