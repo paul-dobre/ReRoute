@@ -17,7 +17,7 @@ const Hero = () => {
       <div className="w-full">
         <img src="/road.jpg" alt="road" className="w-full" />
       </div>
-      <div className={`absolute mt-[300px] sm:px-16 px-10 ml-[70px]`}>
+      <div className={`absolute mt-[300px] sm:px-16 px-10 ml-[70px] z-10`}>
         <h1 className="text-white font-poppins font-semibold text-[35px]">Spatial Reactive Routing Platform</h1>
         <Button label="Start Routing" color="bg-[#0A0222]" text_color="text-[#95A1F9]" border="border-[#95A1F9]" onClick={handleStartRouting}/>
       </div>

@@ -36,7 +36,7 @@ const Navbar = () => {
         {nav ? <AiOutlineClose size={20}  /> : <AiOutlineMenu size={20} className="hover:bg-transparent p-0 rounded-sm transform duration-500 hover:scale-150"/> }
         
       </div>
-    <div className={nav ? "fixed left-0 top-0 w-[60%] h-full border-r-gray-900 bg-primary" : "fixed left-[-100%] z-900"}>
+    <div className={nav ? "fixed left-0 top-0 w-[60%] h-full border-r-gray-900 bg-primary z-50" : "fixed left-[-100%] z-50"}>
     <Link to="/">
        <h1 className="w-full text-3xl font-bold text-white m-4"> ReRoute.</h1> 
        </Link>
