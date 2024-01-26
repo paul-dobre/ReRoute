@@ -3,25 +3,26 @@ import React from 'react'
 const Info = () => {
   return (
     <section className={`flex flex-col py-4`}>
-        <div className='grid grid-cols-2 items-center py-4'>
-            <div className='justify-center mr-[150px]'>
-                <h1 className='text-[#95A1F9] text-[35px] font-poppins font-semibold'>
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center py-4">
+            <div className="md:mr-4">
+                <h1 className="text-[#95A1F9] text-[35px] font-poppins font-semibold">
                     Dynamic Routing Wizardry for Real-Time Optimization
                 </h1>
-                <p className='text-[20px] text-white font-poppins mt-10'>
+                <p className="text-[20px] text-white font-poppins mt-10">
                     Experience the enchantment of our Dynamic Routing Wizardry! Our cutting-edge algorithm works its magic in real-time, dynamically optimizing truck routes. Whether it's navigating unexpected traffic, road closures, or evolving delivery priorities, our platform ensures your fleet stays ahead, always delivering with unparalleled efficiency and cost-effectiveness.
                 </p>
             </div>
-            <div className='flex justify-end'>
-                <img src="/compass.png" alt="compass" className='w-[500px]'/>
+            <div className="flex justify-center md:justify-end">
+                <img src="/compass.png" alt="compass" className="rounded-lg w-fill md:w-fit object-cover" />
+             </div>
+      </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center py-4">
+            <div className='flex justify center md:justify-start'>
+                <img src="/map.png" alt="map" className="rounded-lg w-fill md:w-fit object-cover"
+/>
             </div>
-        </div>
-        <div className='grid grid-cols-2 items-center py-4 mt-[150px]'>
-            <div className='flex justify-start'>
-                <img src="/map.png" alt="map" className='w-[500px]'/>
-            </div>
-            <div className='text-start ml-[160px]'>
-                <h1 className='text-[#95A1F9] text-[35px] font-poppins font-semibold justify-end'>
+            <div className="md:mr-4">
+                <h1 className='text-[#95A1F9] text-[35px] font-poppins font-semibold md:justify-end'>
                     Savvy Smart Routes for Intelligent Route Planning
                 </h1>
                 <p className='text-[20px] text-white font-poppins mt-10'>
@@ -29,9 +30,9 @@ const Info = () => {
                 </p>
             </div>
         </div>
-        <div className='grid grid-cols-2 items-center py-4 mt-[150px]'>
-            <div className='justify-center mr-[150px]'>
-                <h1 className='text-[#95A1F9] text-[35px] font-poppins font-semibold block'>
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center py-4">
+            <div className="md:mr-4">
+                <h1 className='text-[#95A1F9] text-[35px] font-poppins font-semibold block md:justify-end'>
                     Effortless Efficiency Dashboard for User-Friendly Management
                 </h1>
                 <p className='text-[20px] text-white font-poppins mt-10'>
@@ -39,7 +40,8 @@ const Info = () => {
                 </p>
             </div>
             <div className='flex justify-end'>
-                <img src="/phone.png" alt="phone" className='w-[500px]'/>
+                <img src="/phone.png" alt="phone" className="rounded-lg w-fill md:w-fit object-cover"
+/>
             </div>
         </div>
 
