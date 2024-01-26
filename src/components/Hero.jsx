@@ -33,7 +33,7 @@ const Hero = () => {
       ]}
       wrapper="span" speed={50} />
       </div>
-      <button className="text-primary w-[150px] h-[50px] duration-500 bg-white hover:bg-secondary hover:text-white rounded-full hover:bg-gr my-6 mx-auto">Start Routing</button> 
+      <button className="text-primary w-[150px] h-[50px] duration-500 bg-white hover:bg-secondary hover:text-white rounded-full hover:bg-gr my-6 mx-auto" onClick={handleStartRouting}>Start Routing</button> 
                         
     </div>
 </section>

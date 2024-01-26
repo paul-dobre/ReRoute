@@ -12,7 +12,7 @@ const StartRouting = () => {
     </div>
     <div className={`bg-primary ${styles.flexStart} justify-center`}>
       <div >
-        <MapLeaf />
+        <MapLeaf/>
       </div>
     </div>
     <div className={`bg-primary ${styles.paddingX} ${styles.flexStart}`}>
