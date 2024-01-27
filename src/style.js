@@ -18,11 +18,14 @@ const styles = {
     marginY: "sm:my-16 my-6",
 
     // navbar styles
-    navtext: "p-4 hover:rounded-full hover:bg-gray-500 duration-500 hover:border-neutral-50 text-white mr-10 ",
+    navtext: "p-4 border-b border-primary duration-500 hover:border-neutral-50 duration-500 hover:border-neutral-50 text-white mr-10 ",
     navtextmenu: "p-4 border-b border-gray-600 duration-500 hover:border-neutral-50 text-white mr-10 hover:text-secondary",
     menu: "w-[35px] h-[35px] absolute p-0 rounded-sm transform duration-500 ",
-    navbutton: "p-4 text-primary mr-10 duration-500 hover:text-white bg-white hover:bg-secondary rounded-full hover:border-secondary hover:bg-gr",
+    navbutton: "p-4 text-primary mr-10 duration-500 hover:text-white bg-white hover:bg-secondary rounded-full hover:border-secondary hover:bg-gr xxs:[60px]",
     
+    //Card style
+    cardBox: "block max-w-sm p-6 border rounded-lg shadow bg-gray-800 border-gray-700 duration-500 hover:bg-gray-700 group transition-transform transform hover:scale-105 mx-auto  mb-4",
+
   };
   
   export const layout = {

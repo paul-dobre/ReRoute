@@ -2,6 +2,7 @@ import React from "react";
 import styles from "../style";
 import Button from "./Button";
 import { useNavigate } from 'react-router-dom';
+import { TypeAnimation } from 'react-type-animation';
 
 
 const Hero = () => {
@@ -13,15 +14,29 @@ const Hero = () => {
   };
 
   return (
-    <section className={`flex md:flex-row flex-col`}>
-      <div className="w-full">
-        <img src="/road.jpg" alt="road" className="w-full" />
+    <section className="relative h-screen flex flex-col items-center justify-center text-center text-white py-0 px-3">
+    <div className="video-docker absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+        <video className="min-w-full min-h-full absolute object-cover" src="Hero_video_2.mp4" type="video/mp4" autoPlay muted loop style={{ filter: 'none' }}></video>
+    </div>
+
+    <div className="video-content space-y-2 z-10 max-w-[800px] mt-[-96px] w-full h-screen mx-auto text-center flex flex-col justify-center">
+      <p className="text-secondary md:text-3xl sm:text-2xl text-xl font-bold">REVOLUTIONARY</p>
+      <h1 className="md:text-6xl sm:text-5xl text-4xl font-bold pb-8">Reactive Spatial Routing</h1>
+      <div className = "md:text-3xl sm:text-2xl text-xl font-mono pyinline-bock">
+        <TypeAnimation 
+      sequence={[
+        'Navigate with Efficiency',2000,
+        'Navigate with Versatility', 2000,
+        'Navigate with Adaptability', 2000,
+        'Navigate with Reliability', 2000, 
+        'Navigate with ReRoute :)', 2000, 
+      ]}
+      wrapper="span" speed={50} />
       </div>
-      <div className={`absolute mt-[300px] sm:px-16 px-10 ml-[70px] z-10`}>
-        <h1 className="text-white font-poppins font-semibold text-[35px]">Spatial Reactive Routing Platform</h1>
-        <Button label="Start Routing" color="bg-[#0A0222]" text_color="text-[#95A1F9]" border="border-[#95A1F9]" onClick={handleStartRouting}/>
-      </div>
-    </section>
+      <button className="text-primary w-[150px] h-[50px] duration-500 bg-white hover:bg-secondary hover:text-white rounded-full hover:bg-gr my-6 mx-auto" onClick={handleStartRouting}>Start Routing</button> 
+                        
+    </div>
+</section>
   );
 };
 
