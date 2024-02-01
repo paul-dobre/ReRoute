@@ -44,77 +44,69 @@ const Navbar = () => {
   }, [toggle]);
 
   return (
-    <div className="flex justify-between items-center h-24 max-w-screen-xl mx-auto px-4 text-white">
-      <div className="mb-4 md:w-auto">
-        <Link to="/">
-          <img
-            src="/ReRoute_Logo_Scale_1.svg"
-            alt="ReRoute"
-            className="w-full md:w-[150px] sm:w-[150px] xs:w-[150px] xxs:w-[100px] mx-auto"
-          />
-        </Link>
-      </div>
-      <ul
-        className={`p-12 hidden md:flex ${toggle ? "md:hidden" : ""} ml-auto`}
-      >
-        <li className={`${styles.navtext}`}>
-          <Link to="/about">About</Link>
-        </li>
-        <li className={`${styles.navtext}`}>
-          <a href="" className="">
-            Algorithm
-          </a>
-        </li>
-        <li className={`${styles.navtext}`}>
-          <Link to="/help">Help</Link>
-        </li>
-        <li className={`${styles.navbutton}`}>
-          <Link to="/startrouting">Get Started</Link>
-        </li>
-      </ul>
-
-      <div
-        onClick={toggleNav}
-        className="md:hidden flex flex-1 justify-end items-center"
-      >
-        {toggle ? (
-          <AiOutlineClose size={20} className={`${styles.menu}`} />
-        ) : (
-          <AiOutlineMenu size={20} className={`${styles.menu}`} />
-        )}
-        <Link to="/startrouting" className={`${styles.navbutton}`}>
-          Get Started
-        </Link>
-      </div>
-
-      <div
-        ref={menuRef}
-        className={`transition-transform duration-500 ${toggle ? "transform translate-x-0" : "transform -translate-x-full"} z-50 fixed left-0 top-0 w-[60%] h-full border-r-gray-900 bg-primary`}
-      >
-        <div className="mb-4 md:w-[150px]">
+    <header className = "w-full z-50 bg-primary m-0 p-0 b-0">   
+      <div className="flex justify-between items-center h-24 max-w-screen-xl mx-auto text-white w-full">
+        <div className="mb-4 px-10 md:w-auto">
           <Link to="/">
             <img
-              src="/ReRoute_Logo_Scale_2.svg"
+              src="/ReRoute_Logo_Scale_1.svg"
               alt="ReRoute"
-              className={`${toggle ? "justify-start md:w-[150px] sm:w-[150px] xs:w-[150px] xxs:w-[150px]" : "justify-start w-full md:w-[150px]justify-start sm:w-[150px] xs:w-[150px] xxs:w-[150px] mx-auto"}`}
+              className="w-full md:w-[150px] sm:w-[150px] xs:w-[150px] xxs:w-[100px] mx-auto"
             />
           </Link>
         </div>
-        <ul className="pt-12 uppercase">
-          <li className={`${styles.navtextmenu}`}>
+        <ul
+          className={`p-12 hidden md:flex ${toggle ? "md:hidden" : ""} ml-auto`}
+        >
+          <li className={`${styles.navtext}`}>
             <Link to="/about">About</Link>
           </li>
-          <li className={`${styles.navtextmenu}`}>
-            <a href="" className="">
-              Algorithm
-            </a>
-          </li>
-          <li className={`${styles.navtextmenu}`}>
+          <li className={`${styles.navtext}`}>
             <Link to="/help">Help</Link>
           </li>
+          <li className={`${styles.navbutton}`}>
+            <Link to="/startrouting">Get Started</Link>
+          </li>
         </ul>
+
+        <div
+          onClick={toggleNav}
+          className="md:hidden flex flex-1 justify-end items-center"
+        >
+          {toggle ? (
+            <AiOutlineClose size={20} className={`${styles.menu}`} />
+          ) : (
+            <AiOutlineMenu size={20} className={`${styles.menu}`} />
+          )}
+          <Link to="/startrouting" className={`${styles.navbutton}`}>
+            Get Started
+          </Link>
+        </div>
+
+        <div
+          ref={menuRef}
+          className={`transition-transform duration-500 ${toggle ? "transform translate-x-0" : "transform -translate-x-full"} z-50 fixed left-0 top-0 w-[60%] h-full border-r-gray-900 bg-primary`}
+        >
+          <div className="mb-4 md:w-[150px]">
+            <Link to="/">
+              <img
+                src="/ReRoute_Logo_Scale_2.svg"
+                alt="ReRoute"
+                className={`${toggle ? "justify-start md:w-[150px] sm:w-[150px] xs:w-[150px] xxs:w-[150px]" : "justify-start w-full md:w-[150px]justify-start sm:w-[150px] xs:w-[150px] xxs:w-[150px] mx-auto"}`}
+              />
+            </Link>
+          </div>
+          <ul className="pt-12 uppercase">
+            <li className={`${styles.navtextmenu}`}>
+              <Link to="/about">About</Link>
+            </li>
+            <li className={`${styles.navtextmenu}`}>
+              <Link to="/help">Help</Link>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </header>   
   );
 };
 

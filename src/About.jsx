@@ -6,11 +6,9 @@ import { Navbar, AboutUs, Profile } from "./components";
 const About = () => {
   return (
     <div id="about" className="bg-primary w-full overflow-hidden">
-    <div className={`${styles.paddingX} ${styles.flexCenter}`}>
-      <div className={`${styles.boxWidth}`}>
+      <div>
         <Navbar />
       </div>
-    </div>
     <div className={`bg-primary ${styles.flexStart}`}>
       <div className={`${styles.boxWidth}`}>
         <AboutUs />

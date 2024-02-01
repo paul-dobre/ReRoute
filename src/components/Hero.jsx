@@ -29,7 +29,7 @@ const Hero = () => {
         'Navigate with Versatility', 2000,
         'Navigate with Adaptability', 2000,
         'Navigate with Reliability', 2000, 
-        'Navigate with ReRoute :)', 2000, 
+        'Navigate with ReRoute', 2000, 
       ]}
       wrapper="span" speed={50} />
       </div>

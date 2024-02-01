@@ -2,13 +2,18 @@ import React, {useEffect, useState} from "react";
 import "leaflet/dist/leaflet.css"
 import L, { map, polyline } from "leaflet";
 import {Icon} from "leaflet"
+import { FaArrowRight, FaArrowLeft, FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import * as esri from 'esri-leaflet';
 import * as vec from 'esri-leaflet-vector';
 import { ApiKeyManager } from "@esri/arcgis-rest-request";
 import PolygonBarrier from "@arcgis/core/rest/support/PolygonBarrier"
 import PolyLine from '@arcgis/core/geometry/Polyline'
 import Graphic from '@arcgis/core/Graphic'
-
+import 'leaflet-routing-machine';
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
+import * as turf from '@turf/turf'
+import 'leaflet-control-geocoder/dist/Control.Geocoder.css'; 
+import { Geocoder } from 'leaflet-control-geocoder'; 
 
 const customIcon = new Icon({
   iconUrl: "CustomMarker.svg",
@@ -16,30 +21,32 @@ const customIcon = new Icon({
 });
 
 const MapLeaf = () => {
+  const [direcArr, setDirecArr] = useState([]);
 
-
-  
   useEffect(() => {
     // Create the map
-    const map = L.map("map", { minZoom: 2 }).setView([51,-114], 13);
+    const map = L.map("map", { minZoom: 2 }).setView([51.14215,-114.233330], 13);
     
 
     // Add basemap
     const apiKey = "AAPK3c3f7569a5364ebf989232a728f5cbbbD0PGCXGZqbFvXv3e1oUb76gUENrlq1_yhMDPKhunJRKWbLKb2OdXPodGKWPO3UkL";
-    vec.vectorBasemapLayer("arcgis/navigation-night", { apiKey: apiKey }).addTo(map);
-
-    const directions = document.createElement("div");
-    directions.id = "directions";
-    directions.innerHTML = "Click on the map to create a start and end for the route.";
-    document.body.appendChild(directions);
+    L.tileLayer("https://api.mapbox.com/styles/v1/ypaul/clrbbh2e4002d01re65us9mvk/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoieXBhdWwiLCJhIjoiY2xyYjV5eHZqMGtxajJpcnN4Zm1kOGU4YSJ9.nkPc81nO8sFFfAEin7TN1w", {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
 
     const startLayerGroup = L.layerGroup().addTo(map);
     
     let currentStep = "start";
     let startCoords, endCoords;
-
+    let startLat = null;
+    let startLon = null;
+    let endLat = null;
+    let endLon = null;
+    let routeControl = null;
+    let waypoints = null;
+    
     //Buffer Radius
-    let radius = 1.5; //in km
+    let radius = 1; //in km
     let center = map.getCenter();
     let topLeftPoint = [center.lng-(radius/110), center.lat-(radius/110)];
     let topRightPoint = [center.lng+(radius/110), center.lat-(radius/110)];
@@ -70,7 +77,8 @@ const MapLeaf = () => {
 
       }
         const ResponseData = await response.json();
-        console.log(ResponseData);
+        console.log("response data:")
+        console.log(ResponseData.directions[0].features[0].attributes.text);
         //console.log(ResponseData.polygonBarriers.features[0].geometry.rings[0]);
 
         let polylineSymbol = {
@@ -80,6 +88,14 @@ const MapLeaf = () => {
         };
         if (ResponseData.routes && ResponseData.routes.features && ResponseData.routes.features.length > 0) {
           var coords = ResponseData.routes.features[0].geometry.paths[0];
+          let directions = ResponseData.directions[0].features
+          setDirecArr(prevDirecArr => [
+            ...prevDirecArr,
+            ...directions.map(direction => direction.attributes.text)
+          ]);
+          
+          console.log("direction array")
+          console.log(direcArr);
           
           // Rest of your code here...
         } else {
@@ -101,12 +117,15 @@ const MapLeaf = () => {
       }
       
         L.polygon(polycoords, {color: 'red'}).addTo(map);
+      
 
-        let polyline = L.polyline(coords, {color: 'blue'});
+        let polyline = L.polyline(coords, {color: 'blue'}).addTo(map);
         startLayerGroup.addLayer(polyline);
 
-        //const directionsHTML = response.directions[0].features.map((f) => f.attributes.text).join("<br/>");
-        //directions.innerHTML = directionsHTML;
+        waypoints = coords.map(function(coord) {
+          return L.latLng(coord[0], coord[1]); // Note the order: latitude, longitude
+        });
+
         startCoords = null;
         endCoords = null;
       } catch(error) {
@@ -121,16 +140,21 @@ const MapLeaf = () => {
 
       if (currentStep === "start"){
         console.log('at start')
-        startLayerGroup.clearLayers()
-
+        startLayerGroup.clearLayers();
+        setDirecArr([]);
+      
         let marker1 = L.marker(e.latlng, {icon: customIcon});
         startLayerGroup.addLayer(marker1);
         startCoords = coordinates;
+        let startLat = startCoords[1];
+        let startLon = startCoords[0];
         currentStep = "end";
       } else {
         let marker2 = L.marker(e.latlng, {icon: customIcon});
         startLayerGroup.addLayer(marker2);
         endCoords = coordinates;
+        let endLat = endCoords[1];
+        let endLon = endCoords[0];
       
         currentStep = "start";
       }
@@ -150,8 +174,21 @@ const MapLeaf = () => {
 
 
   return (
+    <>
+      <div id="map" className={`flex md:flex-row flex-col w-[1000px] h-screen justify-center z-0`}>
+      </div>
+      <div className="flex flex-col absolute w-[400px] h-[500px] top-30 right-80 z-20 bg-white border-white opacity-40 rounded-xl">
+          {direcArr.map((directionText, index) => (
+            <div key={index} className=" text-black text-opacity-100 font-bold flex flex-row">
+              {directionText.toLowerCase().includes('right') && <FaArrowRight className="mr-2" />}
+              {directionText.toLowerCase().includes('left') && <FaArrowLeft className="mr-2" />}
+              {!directionText.toLowerCase().includes('right') && !directionText.toLowerCase().includes('left') && <FaArrowUp className="mr-2" />}   
+              {directionText}
+            </div>
+          ))}
+      </div>
+    </>
     
-    <div id="map" className={`flex md:flex-row flex-col w-[1000px] h-[800px] justify-center`}></div>
   );
 };
 

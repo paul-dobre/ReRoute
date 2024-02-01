@@ -7,12 +7,12 @@ import VideoPlayer from './components/VideoPlayer';
 const Help = () => {
     return (
       <div id="help" className="bg-primary w-full overflow-hidden">
-      <div className={`${styles.paddingX} ${styles.flexCenter}`}>
-        <div className={`${styles.boxWidth}`}>
+      <div>
+        <div>
           <Navbar />
         </div>
       </div>
-      <div className={` ${styles.flexCenter}`}>
+      <div className={`bg-primary ${styles.flexStart}`}>
         <div className={`${styles.boxWidth}`}>
             <VideoPlayer/>
         </div>
@@ -26,4 +26,4 @@ const Help = () => {
     )
   }
 
-  export default Help
+  export default Help 
