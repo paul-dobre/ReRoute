@@ -25,15 +25,15 @@ const MapSidebar = () => {
                 <SideBarIcon Icon={<BsTools size="28" />} text="Toolbar" className={`${toolclicked ? 'clicked' : ''}`}></SideBarIcon>
             </button>
             {toolclicked && (
-                <div className ={`flex flex-col absolute right-32 top-56`}>
+                <div className ={`flex flex-col absolute right-40 top-56`}>
                     <button  onClick={handleactionClick}>
                         <SideBarIcon Icon={<BsPencilSquare size="28" />} text="Draw Buffer" className={`${actionclicked ? 'clicked' : ''}`}></SideBarIcon>
                     </button>
                     {actionclicked && (
-                        <div className = {`flex flex-col absolute left-16 -top-44`}>
-                            <button><SideBarIcon Icon={<BsGlobe size="28"/>} text="Input Coordinates" ></SideBarIcon></button>
-                            <button><SideBarIcon Icon={<TbShape3 size="28"/>} text="Input Polyline"></SideBarIcon></button>
-                            <button><SideBarIcon Icon={<BsFillRecordCircleFill size="28" />} text="Input Radius"></SideBarIcon></button>
+                        <div className = {`flex flex-col absolute left-20 -top-44`}>
+                            <button><SideBarIcon Icon={<BsGlobe size="28"/>} text="Coordinates" ></SideBarIcon></button>
+                            <button><SideBarIcon Icon={<TbShape3 size="28"/>} text="Polyline"></SideBarIcon></button>
+                            <button><SideBarIcon Icon={<BsFillRecordCircleFill size="28" />} text="Radius"></SideBarIcon></button>
                             <button><SideBarIcon Icon={<BsArrowCounterclockwise size="28" />} text="Reset"></SideBarIcon></button>
                         </div>
                     )}

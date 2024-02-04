@@ -4,7 +4,7 @@ import styles from "../style.js";
 
 const CardInfo = () => {
   return (
-    <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-3 mb-20">
     <div className={`${styles.cardBox}`}>
       <img className="mr-[150 px] object-contain w-full rounded-t-lg h-48 md:h-36 md:w-48 md:rounded-none md:rounded-s-lg" src="optimization.svg" alt=""/>
         <div className="flex flex-col justify-between p-4 leading-normal">

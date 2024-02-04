@@ -3,7 +3,7 @@ import React from 'react'
 const Info = () => {
   return (
     <section className = "items-center font-poppins xl:h-screen w-full">
-        <div className="justify-center flex-1 py-4 lg:py-6 md:px-6 bg-primary">
+        <div className="justify-center flex-1 py-10 lg:py-6 md:px-6 bg-primary">
             <div className="flex flex-wrap">
                 <div className = "w-full px-4 mb-10 lg:w-1/2 lg:mb-0">
                         <video className="relative object-cover w-full h-96 rounded-3xl" 
@@ -28,7 +28,7 @@ const Info = () => {
             </div>
         </div>
         
-        <div className="justify-center flex-1 py-4 lg:py-6 md:px-6 bg-primary">
+        <div className="justify-center flex-1 py-10 lg:py-6 md:px-6 bg-primary">
             <div className="flex flex-wrap">
                 <div className = "w-full px-4 mb-10 lg:w-1/2 lg:mb-0">
                     <h1 className = "mb-4 text-4xl text-secondary text-[35px] font-semibold">
@@ -51,7 +51,7 @@ const Info = () => {
             </div>
         </div>
 
-        <div className="justify-center flex-1 py-4 lg:py-6 md:px-6 bg-primary">
+        <div className="justify-center flex-1 py-10 lg:py-6 md:px-6 bg-primary">
             <div className="flex flex-wrap">
                 <div className = "w-full px-4 mb-10 lg:w-1/2 lg:mb-0">
                         <video className="relative object-cover w-full h-96 rounded-3xl" 
