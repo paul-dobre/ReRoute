@@ -6,19 +6,12 @@ import {
   FaArrowRight,
   FaArrowLeft,
   FaArrowUp,
-  FaArrowDown,
 } from "react-icons/fa";
-import * as esri from "esri-leaflet";
-import * as vec from "esri-leaflet-vector";
 import { ApiKeyManager } from "@esri/arcgis-rest-request";
-import PolygonBarrier from "@arcgis/core/rest/support/PolygonBarrier";
-import PolyLine from "@arcgis/core/geometry/Polyline";
-import Graphic from "@arcgis/core/Graphic";
 import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
-import * as turf from "@turf/turf";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
-import { Geocoder } from "leaflet-control-geocoder";
+
 
 const customIconStart = new Icon({
   iconUrl: "green_marker.svg",
@@ -34,6 +27,7 @@ let startCoords, endCoords;
 
 const MapLeaf = () => {
   const [direcArr, setDirecArr] = useState([]);
+  const [time, setTime] = useState(0);
 
   useEffect(() => {
     // Create the map
@@ -51,14 +45,9 @@ const MapLeaf = () => {
         attribution: "© OpenStreetMap contributors",
       }
     ).addTo(map);
-
+    
     let currentStep = "start";
-    let startLat = null;
-    let startLon = null;
-    let endLat = null;
-    let endLon = null;
-    let routeControl = null;
-
+   
     let geocode1 = L.Control.geocoder({
       collapsed: false,
       position: "topleft",
@@ -101,6 +90,21 @@ const MapLeaf = () => {
       bottomRightPoint[1].toFixed(3),
     ];
 
+    // Real-time Geolocation 
+    if(!navigator.geolocation){
+      console.log("browser doesn't support geolocation feature")
+    }
+    else{
+      navigator.geolocation.getCurrentPosition(getPosition)  //call back function
+    }
+
+    function getPosition(position){
+      console.log(position)
+      var moveLat = position.coords.latitude
+      var moveLon = position.coords.longitude
+      var accuracy = position.coords.accuracy
+    }
+
     const updateRoute = async (url) => {
       const authentication = ApiKeyManager.fromKey(apiKey);
 
@@ -115,8 +119,7 @@ const MapLeaf = () => {
         }
         const ResponseData = await response.json();
         console.log("response data:");
-        console.log(ResponseData.directions[0].features[0].attributes.text);
-        //console.log(ResponseData.polygonBarriers.features[0].geometry.rings[0]);
+        console.log(ResponseData);
 
         let polylineSymbol = {
           type: "simple-line", // autocasts as SimpleLineSymbol()
@@ -135,9 +138,11 @@ const MapLeaf = () => {
             ...directions.map((direction) => direction.attributes.text),
           ]);
 
+          setTime(Math.floor(ResponseData.directions[0].summary.totalDriveTime)+1);
+
           console.log("direction array");
           console.log(direcArr);
-
+          
           // Rest of your code here...
         } else {
           console.error("No route data available in the response.");
@@ -260,30 +265,39 @@ const MapLeaf = () => {
         id="map"
         className={`flex md:flex-row flex-col w-[1000px] h-screen justify-center z-0`}
       ></div>
-      <div
-        className={`flex flex-col overflow-auto absolute w-[400px] h-[500px] top-30 right-80 z-20 bg-white border-white opacity-70 rounded-xl ${
-          direcArr.length === 0 ? "hidden" : ""
-        }`}
-      >
-        {direcArr.map((directionText, index) => (
-          <div
-            key={index}
-            className=" text-black text-opacity-100 font-bold flex flex-row"
-          >
-            {directionText.toLowerCase().includes("right") && (
-              <FaArrowRight className="mr-2" />
-            )}
-            {directionText.toLowerCase().includes("left") && (
-              <FaArrowLeft className="mr-2" />
-            )}
-            {!directionText.toLowerCase().includes("right") &&
-              !directionText.toLowerCase().includes("left") && (
-                <FaArrowUp className="mr-2" />
+      <div className={`flex flex-col items-center justify-start relative w-[400px] top-30 right-80 z-20 ${direcArr.length === 0 ? "hidden" : ""}`}>
+        <div
+          className={`flex flex-col overflow-auto h-[500px] bg-white border-white opacity-70 rounded-xl $`}
+        >
+          {direcArr.map((directionText, index) => (
+            <div
+              key={index}
+              className=" text-black text-opacity-100 font-bold flex flex-row"
+            >
+              {directionText.toLowerCase().includes("right") && (
+                <FaArrowRight className="mr-2" />
               )}
-            {directionText}
+              {directionText.toLowerCase().includes("left") && (
+                <FaArrowLeft className="mr-2" />
+              )}
+              {!directionText.toLowerCase().includes("right") &&
+                !directionText.toLowerCase().includes("left") && (
+                  <FaArrowUp className="mr-2" />
+                )}
+              {directionText}
+            </div>
+          ))}
+        </div>
+        <div className={`flex flex-col overflow-auto h-[50px] w-[400px] bg-white border-white opacity-70 rounded-xl mt-5`}>
+          <div className="text-black font-bold">
+              Total Time: {time} min
           </div>
-        ))}
+        </div>
+        <div>
+          <button className="text-primary w-[150px] h-[50px] duration-500 bg-white hover:bg-secondary hover:text-white rounded-full hover:bg-gr my-6 mx-auto">Start Routing</button>
+        </div>
       </div>
+      
     </>
   );
 };

@@ -11,13 +11,7 @@ export const MapboxMap = (mapID) => {
         center: [-74.0066, 40.7135], // starting position [lng, lat]
         zoom: 14 // starting zoom level
       });
-      var direction = map.addControl(
-        new MapboxDirections({
-        accessToken: mapboxgl.accessToken
-        }),
-        'top-left'
-        );
-        console.log(direction);
+      
       return map;
 
 };
