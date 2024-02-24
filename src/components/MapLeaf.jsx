@@ -28,6 +28,7 @@ let startCoords, endCoords;
 const MapLeaf = () => {
   const [direcArr, setDirecArr] = useState([]);
   const [time, setTime] = useState(0);
+  const [dist, setDist] = useState(0);
 
   useEffect(() => {
     // Create the map
@@ -139,6 +140,7 @@ const MapLeaf = () => {
           ]);
 
           setTime(Math.floor(ResponseData.directions[0].summary.totalDriveTime)+1);
+          setDist((ResponseData.directions[0].summary.totalLength).toFixed(1))
 
           console.log("direction array");
           console.log(direcArr);
@@ -291,6 +293,9 @@ const MapLeaf = () => {
         <div className={`flex flex-col overflow-auto h-[50px] w-[400px] bg-white border-white opacity-70 rounded-xl mt-5`}>
           <div className="text-black font-bold">
               Total Time: {time} min
+          </div>
+          <div className="text-black font-bold">
+              Total Distance: {dist} km
           </div>
         </div>
         <div>
