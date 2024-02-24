@@ -140,7 +140,7 @@ const MapLeaf = () => {
           ]);
 
           setTime(Math.floor(ResponseData.directions[0].summary.totalDriveTime)+1);
-          setDist((ResponseData.directions[0].summary.totalLength).toFixed(1))
+          setDist(((ResponseData.directions[0].summary.totalLength)*1.6).toFixed(1))
 
           console.log("direction array");
           console.log(direcArr);
