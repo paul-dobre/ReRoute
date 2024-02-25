@@ -12,7 +12,6 @@ const StartRouting = () => {
     <div className={`bg-primary ${styles.flexStart}`}>
       <div className ='flex' >
         <MapLeaf/>
-        <MapSidebar/>
       </div>
     </div>
   </div>

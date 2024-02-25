@@ -300,12 +300,12 @@ const MapLeaf = () => {
   }, [map]);
 
   return (
-    <>
+    <div className="flex w-[800px] md:w-[1060px] lg:w-[1200px] mlg:w-[1500px]">
       <div
         id="map"
-        className={`flex md:flex-row flex-col w-[1000px] h-screen justify-center z-0`}
+        className={`flex md:flex-row flex-col w-[100%] h-screen justify-center z-0`}
       ></div>
-      <div className={`flex flex-col items-center justify-start relative w-[400px] top-30 right-80 z-20 ${direcArr.length === 0 ? "hidden" : ""}`}>
+      <div className={`flex flex-col items-center justify-start absolute w-[400px] top-30 right-[11%] z-20 ${direcArr.length === 0 ? "hidden" : ""}`}>
         <div
           className={`flex flex-col overflow-auto h-[500px] bg-white border-white opacity-70 rounded-xl $`}
         >
@@ -340,16 +340,16 @@ const MapLeaf = () => {
           <button className="text-primary w-[150px] h-[50px] duration-500 bg-white hover:bg-secondary hover:text-white rounded-full hover:bg-gr my-6 mx-auto">Start Routing</button>
         </div>
       </div>
-      <div className = {`flex flex-col absolute top-[20%] z-20`}>
-        <button onClick={handleRadiusClick}><SideBarIcon Icon={<BsFillRecordCircleFill size="28" />} text="Radius"></SideBarIcon></button>
+      <div className = {`flex flex-col absolute top-[20%] mlg:top-[16%] z-20`}>
+        <button onClick={handleRadiusClick}><SideBarIcon Icon={<BsFillRecordCircleFill size="28" />} text="Radius" state={radiusClicked}></SideBarIcon></button>
       </div>
       
-    </>
+    </div>
   );
 };
 
-const SideBarIcon = ({ Icon, text = 'words'}) => (
-  <div className = "sb-icons group">
+const SideBarIcon = ({ Icon, text = 'words',state}) => (
+  <div className = {`sb-icons group ${state ? 'sb-active' : ''}`}>
       {Icon}
       <span className="sb-words group-hover:scale-100">
           {text}

@@ -6,7 +6,7 @@ const AboutUs = () => {
       <section className="relative">
             <section className="relative h-screen flex flex-col items-center justify-center text-center text-white py-0 px-3">
                 <div className="video-docker absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-                    <video className="min-w-full min-h-full absolute object-cover" src="Hero_video_2.mp4" type="video/mp4" autoPlay muted loop style={{ filter: 'none' }}></video>
+                    <video className="min-w-full min-h-full absolute object-cover" src="bridge.mp4" type="video/mp4" autoPlay muted loop style={{ filter: 'none' }}></video>
                 </div>
             </section>
             <div className="absolute inset-0 overflow-auto justify-center text-blue-300">
