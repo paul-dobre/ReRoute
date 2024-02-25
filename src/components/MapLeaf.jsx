@@ -165,7 +165,7 @@ const MapLeaf = () => {
           console.log("polycoords")
           console.log(polycoords)
 
-          L.polygon(polycoords, { color: "red" }).addTo(map);
+          L.circle([center[1],center[0]], { color: "red", radius:1000 }).addTo(map);
         }
 
         let polyline = L.polyline(coords, { color: "blue" }).addTo(map);
@@ -283,7 +283,7 @@ const MapLeaf = () => {
           bottomRightPoint[0].toFixed(3),
           bottomRightPoint[1].toFixed(3),
         ];
-        
+
         const url = `https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World/solve?returnPolygonBarriers=true&outSR=4326&f=json&polygonBarriers=%7B%22features%22%3A%5B%7B%22geometry%22%3A%7B%22rings%22%3A%5B%5B%5B${topLeftPoint[0]}%2C${topLeftPoint[1]}%5D%2C%5B${topRightPoint[0]}%2C${topRightPoint[1]}%5D%2C%5B${bottomRightPoint[0]}%2C${bottomRightPoint[1]}%5D%2C%5B${bottomLeftPoint[0]}%2C${bottomLeftPoint[1]}%5D%5D%5D%7D%2C%22attributes%22%3A%7B%22Name%22%3A%22Flood%20zone%22%2C%22BarrierType%22%3A0%7D%7D%5D%7D&token=AAPK3c3f7569a5364ebf989232a728f5cbbbD0PGCXGZqbFvXv3e1oUb76gUENrlq1_yhMDPKhunJRKWbLKb2OdXPodGKWPO3UkL&stops=${startCoords[0]},${startCoords[1]};${endCoords[0]},${endCoords[1]}&startTime=now&returnDirections=true`;
         updateRoute(url);
       }
