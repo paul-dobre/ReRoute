@@ -11,6 +11,7 @@ import { ApiKeyManager } from "@esri/arcgis-rest-request";
 import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
+import {BsFillRecordCircleFill} from "react-icons/bs";
 
 
 const customIconStart = new Icon({
@@ -23,12 +24,31 @@ const customIconEnd = new Icon({
   iconSize: [38, 38],
 });
 
+const customIconBuffer = new Icon({
+  iconUrl: "black_marker.svg",
+  iconSize: [38, 38],
+});
+
 let startCoords, endCoords;
+let centerState = false;
+let center = [];
+let topLeftPoint;
+let topRightPoint;
+let bottomLeftPoint;
+let bottomRightPoint;
 
 const MapLeaf = () => {
   const [direcArr, setDirecArr] = useState([]);
   const [time, setTime] = useState(0);
   const [dist, setDist] = useState(0);
+
+  const [radiusClicked, setRadiusClicked] = useState(false);
+  const handleRadiusClick = () => {
+    setRadiusClicked(current => !current)
+    centerState = !centerState
+
+    console.log(radiusClicked)
+  }
 
   useEffect(() => {
     // Create the map
@@ -65,32 +85,7 @@ const MapLeaf = () => {
 
     const startLayerGroup = L.layerGroup().addTo(map);
 
-    //Buffer Radius
-    let radius = 1; //in km
-    let center = map.getCenter();
-    let topLeftPoint = [center.lng - radius / 110, center.lat - radius / 110];
-    let topRightPoint = [center.lng + radius / 110, center.lat - radius / 110];
-    let bottomLeftPoint = [
-      center.lng - radius / 110,
-      center.lat + radius / 110,
-    ];
-    let bottomRightPoint = [
-      center.lng + radius / 110,
-      center.lat + radius / 110,
-    ];
-
-    //round to 3 decimal places
-    topLeftPoint = [topLeftPoint[0].toFixed(3), topLeftPoint[1].toFixed(3)];
-    topRightPoint = [topRightPoint[0].toFixed(3), topRightPoint[1].toFixed(3)];
-    bottomLeftPoint = [
-      bottomLeftPoint[0].toFixed(3),
-      bottomLeftPoint[1].toFixed(3),
-    ];
-    bottomRightPoint = [
-      bottomRightPoint[0].toFixed(3),
-      bottomRightPoint[1].toFixed(3),
-    ];
-
+    
     // Real-time Geolocation 
     if(!navigator.geolocation){
       console.log("browser doesn't support geolocation feature")
@@ -108,7 +103,10 @@ const MapLeaf = () => {
 
     const updateRoute = async (url) => {
       const authentication = ApiKeyManager.fromKey(apiKey);
+      console.log("radius")
+      console.log(radiusClicked)
 
+      //Buffer Radius
       try {
         const response = await fetch(url);
 
@@ -144,8 +142,6 @@ const MapLeaf = () => {
 
           console.log("direction array");
           console.log(direcArr);
-          
-          // Rest of your code here...
         } else {
           console.error("No route data available in the response.");
         }
@@ -156,16 +152,21 @@ const MapLeaf = () => {
           coords[i][1] = temp;
         }
 
-        var polycoords =
+        if (center.length !== 0){
+          var polycoords =
           ResponseData.polygonBarriers.features[0].geometry.rings[0];
 
-        for (let i = 0; i < polycoords.length; i++) {
-          const temp = polycoords[i][0];
-          polycoords[i][0] = polycoords[i][1];
-          polycoords[i][1] = temp;
-        }
+          for (let i = 0; i < polycoords.length; i++) {
+            const temp = polycoords[i][0];
+            polycoords[i][0] = polycoords[i][1];
+            polycoords[i][1] = temp;
+          }
 
-        L.polygon(polycoords, { color: "red" }).addTo(map);
+          console.log("polycoords")
+          console.log(polycoords)
+
+          L.polygon(polycoords, { color: "red" }).addTo(map);
+        }
 
         let polyline = L.polyline(coords, { color: "blue" }).addTo(map);
         startLayerGroup.addLayer(polyline);
@@ -228,7 +229,7 @@ const MapLeaf = () => {
     map.on("click", (e) => {
       const coordinates = [e.latlng.lng, e.latlng.lat];
 
-      if (currentStep === "start") {
+      if (currentStep === "start" && centerState == false) {
         console.log("at start");
         startLayerGroup.clearLayers();
         setDirecArr([]);
@@ -239,7 +240,7 @@ const MapLeaf = () => {
         let startLat = startCoords[1];
         let startLon = startCoords[0];
         currentStep = "end";
-      } else {
+      } else if (currentStep === "end" && centerState == false) {
         let marker2 = L.marker(e.latlng, { icon: customIconEnd });
         startLayerGroup.addLayer(marker2);
         endCoords = coordinates;
@@ -248,9 +249,46 @@ const MapLeaf = () => {
 
         currentStep = "start";
       }
+      else{
+        let marker3 = L.marker(e.latlng, {icon: customIconBuffer});
+        startLayerGroup.addLayer(marker3);
+        center = coordinates;
+        console.log(center);
 
-      if (startCoords && endCoords) {
+      }
+      
+      if (startCoords && endCoords && center.length !== 0) {
+        console.log("center i if statement"+center);
+        console.log(bottomLeftPoint, bottomRightPoint, topLeftPoint, topRightPoint);
+        let radius = 1; //in km
+        topLeftPoint = [center[0] - radius / 110, center[1] - radius / 110];
+        topRightPoint = [center[0] + radius / 110, center[1] - radius / 110];
+        bottomLeftPoint = [
+          center[0] - radius / 110,
+          center[1] + radius / 110,
+        ];
+        bottomRightPoint = [
+          center[0] + radius / 110,
+          center[1] + radius / 110,
+        ];
+
+        //round to 3 decimal places
+        topLeftPoint = [topLeftPoint[0].toFixed(3), topLeftPoint[1].toFixed(3)];
+        topRightPoint = [topRightPoint[0].toFixed(3), topRightPoint[1].toFixed(3)];
+        bottomLeftPoint = [
+          bottomLeftPoint[0].toFixed(3),
+          bottomLeftPoint[1].toFixed(3),
+        ];
+        bottomRightPoint = [
+          bottomRightPoint[0].toFixed(3),
+          bottomRightPoint[1].toFixed(3),
+        ];
+        
         const url = `https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World/solve?returnPolygonBarriers=true&outSR=4326&f=json&polygonBarriers=%7B%22features%22%3A%5B%7B%22geometry%22%3A%7B%22rings%22%3A%5B%5B%5B${topLeftPoint[0]}%2C${topLeftPoint[1]}%5D%2C%5B${topRightPoint[0]}%2C${topRightPoint[1]}%5D%2C%5B${bottomRightPoint[0]}%2C${bottomRightPoint[1]}%5D%2C%5B${bottomLeftPoint[0]}%2C${bottomLeftPoint[1]}%5D%5D%5D%7D%2C%22attributes%22%3A%7B%22Name%22%3A%22Flood%20zone%22%2C%22BarrierType%22%3A0%7D%7D%5D%7D&token=AAPK3c3f7569a5364ebf989232a728f5cbbbD0PGCXGZqbFvXv3e1oUb76gUENrlq1_yhMDPKhunJRKWbLKb2OdXPodGKWPO3UkL&stops=${startCoords[0]},${startCoords[1]};${endCoords[0]},${endCoords[1]}&startTime=now&returnDirections=true`;
+        updateRoute(url);
+      }
+      else if (startCoords && endCoords) {
+        const url = `https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World/solve?returnPolygonBarriers=false&outSR=4326&f=json&token=AAPK3c3f7569a5364ebf989232a728f5cbbbD0PGCXGZqbFvXv3e1oUb76gUENrlq1_yhMDPKhunJRKWbLKb2OdXPodGKWPO3UkL&stops=${startCoords[0]},${startCoords[1]};${endCoords[0]},${endCoords[1]}&startTime=now&returnDirections=true`;
         updateRoute(url);
       }
     });
@@ -302,9 +340,24 @@ const MapLeaf = () => {
           <button className="text-primary w-[150px] h-[50px] duration-500 bg-white hover:bg-secondary hover:text-white rounded-full hover:bg-gr my-6 mx-auto">Start Routing</button>
         </div>
       </div>
+      <div className = {`flex flex-col absolute top-[20%] z-20`}>
+        <button onClick={handleRadiusClick}><SideBarIcon Icon={<BsFillRecordCircleFill size="28" />} text="Radius"></SideBarIcon></button>
+      </div>
       
     </>
   );
 };
+
+const SideBarIcon = ({ Icon, text = 'words'}) => (
+  <div className = "sb-icons group">
+      {Icon}
+      <span className="sb-words group-hover:scale-100">
+          {text}
+      </span>
+  </div>
+  //<button><SideBarIcon Icon={<BsGlobe size="28"/>} text="Coordinates" ></SideBarIcon></button>
+  //<button><SideBarIcon Icon={<TbShape3 size="28"/>} text="Polyline"></SideBarIcon></button>
+
+)
 
 export default MapLeaf;
