@@ -11,6 +11,7 @@ import Profile from "./Profile";
 import MapLeaf from "./MapLeaf";
 import MapSidebar from "./MapSidebar";
 import LeafMap from "./LeafMap.jsx";
+import InfoAboutUs from "./InfoAboutUs.jsx";
 
 export {
     Navbar,
@@ -26,4 +27,5 @@ export {
     MapLeaf,
     MapSidebar,
     LeafMap,
+    InfoAboutUs,
 };

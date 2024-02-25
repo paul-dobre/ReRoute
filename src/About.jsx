@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from "./style";
-import { Navbar, AboutUs, Profile } from "./components";
+import { Navbar, AboutUs, Profile, InfoAboutUs} from "./components";
 
 
 const About = () => {
@@ -14,6 +14,13 @@ const About = () => {
         <AboutUs />
       </div>
     </div>
+
+    <div className={`bg-primary py-56 ${styles.paddingX} ${styles.flexStart}`}>
+      <div className={`${styles.boxWidth}`}>
+        <InfoAboutUs />
+      </div>
+    </div>
+
     <div className={`bg-primary ${styles.paddingX} ${styles.flexStart}`}>
       <div className={`${styles.boxWidth}`}>
         <Profile/>
