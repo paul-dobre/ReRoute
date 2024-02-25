@@ -1,28 +1,25 @@
-import React from 'react'
+import React from 'react';
 
 const Profile = () => {
-  return (
-    <section className={`flex md:flex-row flex-col py-10 mt-10`}>
-        <div className="grid grid-cols-4 items-center justify-between w-full">
-            <div className='flex flex-col items-center justify-center'>
-                <img src="/mahmoud.jpg" alt="Mahmoud" className="w-[200px] h-[200px] rounded-full object-cover"/>
-                <h2 className='text-secondary text-[35px] text-[#F2F1F2] mt-5'>Mahmoud Ali</h2>
+    return (
+        <section className="flex flex-col md:flex-row py-10 mt-10 justify-center items-center">
+            <div className="flex flex-wrap justify-center md:justify-between">
+                <ProfileCard name="Mahmoud Ali" imagePath="/mahmoud.jpg" />
+                <ProfileCard name="Paul Dobre" imagePath="/pic.svg" />
+                <ProfileCard name="Amen Fasil" imagePath="/pic.svg" />
+                <ProfileCard name="Ammar Wajid" imagePath="/pic.svg" />
             </div>
-            <div className='flex flex-col items-center justify-center'>
-                <img src="/pic.svg" alt="Mahmoud" className="w-[200px] h-[200px] rounded-full object-cover"/>
-                <h2 className='text-secondary text-[35px] text-[#F2F1F2] mt-5'>Paul Dobre</h2>
-            </div>
-            <div className='flex flex-col items-center justify-center'>
-                <img src="/pic.svg" alt="Mahmoud" className="w-[200px] h-[200px] rounded-full object-cover"/>
-                <h2 className='text-secondary text-[35px] text-[#F2F1F2] mt-5'>Amen Fasil</h2>
-            </div>
-            <div className='flex flex-col items-center justify-center'>
-                <img src="/pic.svg" alt="Mahmoud" className="w-[200px] h-[200px] rounded-full object-cover"/>
-                <h2 className='text-secondary text-[35px] text-[#F2F1F2] mt-5'>Ammar Wajid</h2>
-            </div>
-        </div>
-    </section>
-  )
+        </section>
+    )
 }
 
-export default Profile
+const ProfileCard = ({ name, imagePath }) => {
+    return (
+        <div className="flex flex-col items-center justify-center mx-4 my-4 md:mx-0" style={{ margin: '50px' }}>
+            <img src={imagePath} alt={name} className="w-[200px] h-[200px] rounded-full object-cover" />
+            <h2 className="text-secondary text-2xl md:text-4xl mt-5">{name}</h2>
+        </div>
+    );
+}
+
+export default Profile;
