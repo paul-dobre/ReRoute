@@ -219,6 +219,10 @@ const MapLeaf = () => {
     geocode1.on("markgeocode", function (e) {
       startLayerGroup.clearLayers();
 
+      if (previousPolyline) {
+        map.removeLayer(previousPolyline); 
+     }
+
       var latlng = e.geocode.center; 
       startCoords = [latlng.lng, latlng.lat];
 
@@ -251,6 +255,11 @@ const MapLeaf = () => {
       if (currentStep === "start" && centerState == false) {
         console.log("at start");
         startLayerGroup.clearLayers();
+
+        if (previousPolyline) {
+          map.removeLayer(previousPolyline); // Remove the old polyline
+       }
+
         setDirecArr([]);
 
         let marker1 = L.marker(e.latlng, { icon: customIconStart , className: 'dummy'});
