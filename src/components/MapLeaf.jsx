@@ -1,27 +1,33 @@
 import React, { useEffect, useState } from "react";
+import ReactDOMServer from 'react-dom/server';
 import "leaflet/dist/leaflet.css";
-import L, { map, polyline } from "leaflet";
+import L, { map, polyline} from "leaflet";
 import { Icon } from "leaflet";
-import {
-  FaArrowRight,
-  FaArrowLeft,
-  FaArrowUp,
-} from "react-icons/fa";
 import { ApiKeyManager } from "@esri/arcgis-rest-request";
 import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
-import {BsFillRecordCircleFill} from "react-icons/bs";
+import { BsPlusCircle, BsFillFileEarmarkTextFill, BsPencilSquare, BsTools, BsGlobe, BsArrowCounterclockwise, BsFillRecordCircleFill} from "react-icons/bs";
+import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import '@fortawesome/fontawesome-svg-core/styles.css'; 
+import 'leaflet/dist/leaflet.css';
+import 'leaflet.polyline.snakeanim'; 
 
 
-const customIconStart = new Icon({
-  iconUrl: "green_marker.svg",
-  iconSize: [38, 38],
+const iconGreen = ReactDOMServer.renderToString(<FontAwesomeIcon icon={faLocationDot} style={{ color: 'green', fontSize: '30'}} className= 'fa-bounce' />)
+const iconRed = ReactDOMServer.renderToString(<FontAwesomeIcon icon={faLocationDot} style={{ color: 'red', fontSize: '30' }} className='fa-bounce' />)
+
+const customIconStart = L.divIcon({
+  html: iconGreen, className: 'dummy', iconSize: [45, 45]
 });
 
-const customIconEnd = new Icon({
-  iconUrl: "red_marker.svg",
-  iconSize: [38, 38],
+const customIconEnd = L.divIcon({
+  html: iconRed, className: 'dummy'
 });
 
 const customIconBuffer = new Icon({
@@ -44,6 +50,8 @@ const MapLeaf = () => {
   const [direcArr, setDirecArr] = useState([]);
   const [time, setTime] = useState(0);
   const [dist, setDist] = useState(0);
+  const[showDirections, setShowDirections] = useState(false);
+  let previousPolyline = null; 
 
   const [radiusClicked, setRadiusClicked] = useState(false);
   const handleRadiusClick = () => {
@@ -109,6 +117,8 @@ const MapLeaf = () => {
       console.log("radius")
       console.log(radiusClicked)
 
+    
+
       //Buffer Radius
       try {
         const response = await fetch(url);
@@ -169,8 +179,32 @@ const MapLeaf = () => {
           console.log(polycoords)
         }
 
-        let polyline = L.polyline(coords, { color: "blue" }).addTo(map);
-        startLayerGroup.addLayer(polyline);
+
+        if (previousPolyline) {
+           map.removeLayer(previousPolyline); // Remove the old polyline
+        }
+      
+
+        let polyline = L.polyline(coords, { 
+          color: "red", 
+          weight: 5,
+          opacity: 1, 
+        }).addTo(map);
+        
+        const timeDur = 1;
+
+        let routeBounds = polyline.getBounds(); 
+        
+        map.flyToBounds(routeBounds, { 
+          duration: timeDur, 
+          padding: [50, 50]
+        });  
+
+        setTimeout(() => {
+          polyline.snakeIn({duration: timeDur});
+      }, 1000);
+      
+        previousPolyline = polyline;
 
         startCoords = null;
         endCoords = null;
@@ -188,14 +222,7 @@ const MapLeaf = () => {
       var latlng = e.geocode.center; 
       startCoords = [latlng.lng, latlng.lat];
 
-      var customMarkerStart = L.marker(latlng, {
-        icon: L.icon({
-          iconUrl: 'green_marker.svg',
-          iconSize: [38, 38], 
-          iconAnchor: [12, 41], 
-          popupAnchor: [1, -34] 
-        })
-      });
+      var customMarkerStart = L.marker(latlng, {icon: customIconStart , className: 'dummy'});
 
       startLayerGroup.addLayer(customMarkerStart);
     });
@@ -204,14 +231,7 @@ const MapLeaf = () => {
       var latlng = e.geocode.center; 
       endCoords = [latlng.lng, latlng.lat];
 
-      var customMarkerEnd = L.marker(latlng, {
-        icon: L.icon({
-          iconUrl: 'red_marker.svg',
-          iconSize: [38, 38],
-          iconAnchor: [12, 41],
-          popupAnchor: [1, -34] 
-        })
-      });
+      var customMarkerEnd = L.marker(latlng, {icon: customIconEnd , className: 'dummy'});
 
       startLayerGroup.addLayer(customMarkerEnd);
       if (startCoords && endCoords && center.length !== 0) {
@@ -233,7 +253,7 @@ const MapLeaf = () => {
         startLayerGroup.clearLayers();
         setDirecArr([]);
 
-        let marker1 = L.marker(e.latlng, { icon: customIconStart });
+        let marker1 = L.marker(e.latlng, { icon: customIconStart , className: 'dummy'});
         startLayerGroup.addLayer(marker1);
         startCoords = coordinates;
         let startLat = startCoords[1];
@@ -249,7 +269,7 @@ const MapLeaf = () => {
         currentStep = "start";
       }
       else{
-        let marker3 = L.marker(e.latlng, {icon: customIconBuffer}).addTo(map);
+        let marker3 = L.marker(e.latlng, {icon: customIconBuffer, className: 'dummy'}).addTo(map);
         startLayerGroup.addLayer(marker3);
         center = coordinates;
         L.circle([center[1],center[0]], { color: "orange", radius:500 }).addTo(map);
@@ -306,52 +326,58 @@ const MapLeaf = () => {
 
   return (
     <div className="flex w-[800px] md:w-[1060px] lg:w-[1200px] mlg:w-[1500px]">
-      <div
-        id="map"
-        className={`flex md:flex-row flex-col w-[100%] h-screen justify-center z-0`}
-      ></div>
-      <div className={`flex flex-col items-center justify-start absolute w-[400px] top-30 right-[11%] z-20 ${direcArr.length === 0 ? "hidden" : ""}`}>
-        <div
-          className={`flex flex-col overflow-auto h-[500px] bg-white border-white opacity-70 rounded-xl $`}
-        >
-          {direcArr.map((directionText, index) => (
-            <div
-              key={index}
-              className=" text-black text-opacity-100 font-bold flex flex-row"
-            >
-              {directionText.toLowerCase().includes("right") && (
-                <FaArrowRight className="mr-2" />
-              )}
-              {directionText.toLowerCase().includes("left") && (
-                <FaArrowLeft className="mr-2" />
-              )}
-              {!directionText.toLowerCase().includes("right") &&
-                !directionText.toLowerCase().includes("left") && (
-                  <FaArrowUp className="mr-2" />
-                )}
-              {directionText}
+      {/* Map Container */}
+      <div id="map" className="flex md:flex-row flex-col w-[100%] h-screen justify-center z-0" />
+
+      <div className="flex flex-col items-center justify-start absolute top-30 right-[11%] z-20">
+        <div className="relative"> {/* Relative container for positioning */}
+          <button 
+            className="text-primary w-[150px] h-[50px] duration-500 bg-white bg-opacity-40 hover:bg-white hover:bg-opacity-100 rounded-full my-6 mx-auto flex items-center justify-between px-4"
+            onClick={() => setShowDirections(!showDirections)}>Show Directions {showDirections ? <FaAngleUp /> : <FaAngleDown />}</button>
+          
+          <div className={`absolute top-12 right-0 bg-white bg-opacity-75 duration-200 rounded-xl shadow-md overflow-hidden w-[400px] p-4 my-7 ${showDirections ? '' : 'hidden'}`}>
+  <div className="max-h-[300px] overflow-y-auto"> {/* Set a maximum height and enable vertical scrolling */}
+    <div className="flex flex-col p-4"> 
+      {direcArr.map((directionText, index) => (
+        <div key={index} className="text-black text-opacity-100 font-bold flex items-center mb-2">
+          <div className=" w-10 h-10 items-center justify-center mr-2 p-2">
+            {directionText.toLowerCase().includes("right") && (
+              <FontAwesomeIcon icon={ faArrowRight } className = "text-primary fa-beat-fade"/>
+            )}
+            {directionText.toLowerCase().includes("left") && (
+              <FontAwesomeIcon icon={ faArrowLeft } className = "text-primary fa-beat-fade"/>
+            )}
+            {!directionText.toLowerCase().includes("right") && !directionText.toLowerCase().includes("left") && (
+              <FontAwesomeIcon icon={ faArrowUp } className = "text-primary fa-beat-fade"/>
+            )}
+          </div>
+          <span>{directionText}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+
+            <div className="flex flex-col p-4 mt-5"> 
+              <div className="text-black font-bold">Total Time: {time} min</div>
+              <div className="text-black font-bold">Total Distance: {dist} km</div>
             </div>
-          ))}
-        </div>
-        <div className={`flex flex-col overflow-auto h-[50px] w-[400px] bg-white border-white opacity-70 rounded-xl mt-5`}>
-          <div className="text-black font-bold">
-              Total Time: {time} min
-          </div>
-          <div className="text-black font-bold">
-              Total Distance: {dist} km
+
           </div>
         </div>
-        <div>
-          <button className="text-primary w-[150px] h-[50px] duration-500 bg-white hover:bg-secondary hover:text-white rounded-full hover:bg-gr my-6 mx-auto">Start Routing</button>
-        </div>
       </div>
-      <div className = {`flex flex-col absolute top-[20%] mlg:top-[16%] z-20`}>
-        <button onClick={handleRadiusClick}><SideBarIcon Icon={<BsFillRecordCircleFill size="28" />} text="Buffer" state={radiusClicked}></SideBarIcon></button>
+                    
+      <div className={`flex flex-col absolute top-48 mlg:top-[16%] z-20`}>
+        <button className="text-primary w-[150px] h-[50px] duration-500 bg-white hover:bg-secondary hover:text-white rounded-full hover:bg-gr my-20 mx-auto">Start Routing</button>
       </div>
-      
+
+      <div className={`flex flex-col absolute top-52 mlg:top-[16%] z-20`}>
+        <button onClick={handleRadiusClick}><SideBarIcon Icon={<BsFillRecordCircleFill size="28" />} text="Buffer" state={radiusClicked} /></button>
+        
+      </div>
     </div>
   );
 };
+
 
 const SideBarIcon = ({ Icon, text = 'words',state}) => (
   <div className = {`sb-icons group ${state ? 'sb-active' : ''}`}>
@@ -362,7 +388,11 @@ const SideBarIcon = ({ Icon, text = 'words',state}) => (
   </div>
   //<button><SideBarIcon Icon={<BsGlobe size="28"/>} text="Coordinates" ></SideBarIcon></button>
   //<button><SideBarIcon Icon={<TbShape3 size="28"/>} text="Polyline"></SideBarIcon></button>
+  //<button><SideBarIcon Icon={<BsArrowCounterclockwise size="28" />} text="Reset"></SideBarIcon></button>
 
 )
 
 export default MapLeaf;
+
+
+

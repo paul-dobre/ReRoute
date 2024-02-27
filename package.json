@@ -15,6 +15,10 @@
     "@emotion/styled": "^11.11.0",
     "@esri/arcgis-rest-request": "^4.2.0",
     "@esri/arcgis-rest-routing": "^4.0.3",
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@lordicon/react": "^1.4.1",
     "@mapbox/mapbox-gl-directions": "^4.2.0",
     "@mui/icons-material": "^5.15.3",
     "@mui/material": "^5.15.3",
@@ -30,6 +34,8 @@
     "leaflet": "^1.9.4",
     "leaflet-control-geocoder": "^2.4.0",
     "leaflet-routing-machine": "^3.2.12",
+    "leaflet.motion": "^0.3.2",
+    "leaflet.polyline.snakeanim": "^0.2.0",
     "mapbox-gl": "^3.0.1",
     "mapbox-gl-leaflet": "^0.0.16",
     "react": "^18.2.0",
@@ -46,6 +52,7 @@
     "screenfull": "^6.0.2"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.3",
