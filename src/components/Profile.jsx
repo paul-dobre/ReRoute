@@ -5,9 +5,9 @@ const Profile = () => {
         <section className="flex flex-col md:flex-row py-10 mt-10 justify-center items-center">
             <div className="flex flex-wrap justify-center md:justify-between">
                 <ProfileCard name="Mahmoud Ali" imagePath="/mahmoud.jpg" />
-                <ProfileCard name="Paul Dobre" imagePath="/pic.svg" />
-                <ProfileCard name="Amen Fasil" imagePath="/pic.svg" />
-                <ProfileCard name="Ammar Wajid" imagePath="/pic.svg" />
+                <ProfileCard name="Paul Dobre" imagePath="/paul.jpeg" />
+                <ProfileCard name="Amen Fasil" imagePath="/amen.jpg" />
+                <ProfileCard name="Ammar Wajid" imagePath="/Ammar.jpeg" />
             </div>
         </section>
     )

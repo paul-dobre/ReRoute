@@ -28,7 +28,7 @@ const InfoAboutUs = () => {
                         FINDING YOUR WAY
                     </h1>
                     <p className="text-[20px] text-white font-poppins mt-10">
-                    In addition to routing around an area, the platform will also  
+                    In addition to routing around an area, the platform will also   
                     <em>ReRoute</em>  out of said area with the
                     fastest possible public route, should they find themselves astray.
                     </p>
@@ -46,7 +46,7 @@ const InfoAboutUs = () => {
                     Group 8 embarked on the journey to create this life-changing platform as a simple capstone project. 
                     They had aspirations of attaining high grades and gaining a professional degree. 
                     However, upon spending countless hours working together through the problems, researching methods to achieve what we set out to, 
-                    enacting them, it became something more than a "simple" capstone project. It became a <strong>DREAM.</strong>
+                    enacting them, it became something more than a "simple" capstone project. It became a <strong>WET DREAM.</strong>
                     </p>
                 </div>
                 <div className = "w-full px-4 mb-10 lg:w-1/2 lg:mb-0">

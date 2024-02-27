@@ -25,10 +25,11 @@ const customIconEnd = new Icon({
 });
 
 const customIconBuffer = new Icon({
-  iconUrl: "black_marker.svg",
+  iconUrl: "orange.svg",
   iconSize: [38, 38],
 });
 
+// Global Variables --------------------------------------------------------
 let startCoords, endCoords;
 let centerState = false;
 let center = [];
@@ -36,6 +37,8 @@ let topLeftPoint;
 let topRightPoint;
 let bottomLeftPoint;
 let bottomRightPoint;
+let encode_string = '';
+let count = 1;
 
 const MapLeaf = () => {
   const [direcArr, setDirecArr] = useState([]);
@@ -164,8 +167,6 @@ const MapLeaf = () => {
 
           console.log("polycoords")
           console.log(polycoords)
-
-          L.circle([center[1],center[0]], { color: "red", radius:1000 }).addTo(map);
         }
 
         let polyline = L.polyline(coords, { color: "blue" }).addTo(map);
@@ -197,11 +198,6 @@ const MapLeaf = () => {
       });
 
       startLayerGroup.addLayer(customMarkerStart);
-      if (startCoords && endCoords) {
-        const url = `https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World/solve?returnPolygonBarriers=true&outSR=4326&f=json&polygonBarriers=%7B%22features%22%3A%5B%7B%22geometry%22%3A%7B%22rings%22%3A%5B%5B%5B${topLeftPoint[0]}%2C${topLeftPoint[1]}%5D%2C%5B${topRightPoint[0]}%2C${topRightPoint[1]}%5D%2C%5B${bottomRightPoint[0]}%2C${bottomRightPoint[1]}%5D%2C%5B${bottomLeftPoint[0]}%2C${bottomLeftPoint[1]}%5D%5D%5D%7D%2C%22attributes%22%3A%7B%22Name%22%3A%22Flood%20zone%22%2C%22BarrierType%22%3A0%7D%7D%5D%7D&token=AAPK3c3f7569a5364ebf989232a728f5cbbbD0PGCXGZqbFvXv3e1oUb76gUENrlq1_yhMDPKhunJRKWbLKb2OdXPodGKWPO3UkL&stops=${startCoords[0]},${startCoords[1]};${endCoords[0]},${endCoords[1]}&startTime=now&returnDirections=true`;
-        updateRoute(url);
-        console.log(`Start Coords: ${startCoords}`);
-      }
     });
 
     geocode2.on("markgeocode", function (e) {
@@ -218,14 +214,17 @@ const MapLeaf = () => {
       });
 
       startLayerGroup.addLayer(customMarkerEnd);
-      if (startCoords && endCoords) {
-        const url = `https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World/solve?returnPolygonBarriers=true&outSR=4326&f=json&polygonBarriers=%7B%22features%22%3A%5B%7B%22geometry%22%3A%7B%22rings%22%3A%5B%5B%5B${topLeftPoint[0]}%2C${topLeftPoint[1]}%5D%2C%5B${topRightPoint[0]}%2C${topRightPoint[1]}%5D%2C%5B${bottomRightPoint[0]}%2C${bottomRightPoint[1]}%5D%2C%5B${bottomLeftPoint[0]}%2C${bottomLeftPoint[1]}%5D%5D%5D%7D%2C%22attributes%22%3A%7B%22Name%22%3A%22Flood%20zone%22%2C%22BarrierType%22%3A0%7D%7D%5D%7D&token=AAPK3c3f7569a5364ebf989232a728f5cbbbD0PGCXGZqbFvXv3e1oUb76gUENrlq1_yhMDPKhunJRKWbLKb2OdXPodGKWPO3UkL&stops=${startCoords[0]},${startCoords[1]};${endCoords[0]},${endCoords[1]}&startTime=now&returnDirections=true`;
+      if (startCoords && endCoords && center.length !== 0) {
+        const url = `https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World/solve?returnPolygonBarriers=true&outSR=4326&f=json&polygonBarriers=%7B%22features%22%3A%5B${encode_string}%5D%7D&token=AAPK3c3f7569a5364ebf989232a728f5cbbbD0PGCXGZqbFvXv3e1oUb76gUENrlq1_yhMDPKhunJRKWbLKb2OdXPodGKWPO3UkL&stops=${startCoords[0]},${startCoords[1]};${endCoords[0]},${endCoords[1]}&startTime=now&returnDirections=true`;
         updateRoute(url);
-        console.log(`Start Coords: ${startCoords}`);
-        console.log(`end Coords: ${endCoords}`);
+      }
+      else if(startCoords && endCoords){
+        const url = `https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World/solve?returnPolygonBarriers=false&outSR=4326&f=json&token=AAPK3c3f7569a5364ebf989232a728f5cbbbD0PGCXGZqbFvXv3e1oUb76gUENrlq1_yhMDPKhunJRKWbLKb2OdXPodGKWPO3UkL&stops=${startCoords[0]},${startCoords[1]};${endCoords[0]},${endCoords[1]}&startTime=now&returnDirections=true`;
+        updateRoute(url);
       }
     });
-
+    
+    // click on map
     map.on("click", (e) => {
       const coordinates = [e.latlng.lng, e.latlng.lat];
 
@@ -250,17 +249,12 @@ const MapLeaf = () => {
         currentStep = "start";
       }
       else{
-        let marker3 = L.marker(e.latlng, {icon: customIconBuffer});
+        let marker3 = L.marker(e.latlng, {icon: customIconBuffer}).addTo(map);
         startLayerGroup.addLayer(marker3);
         center = coordinates;
-        console.log(center);
-
-      }
-      
-      if (startCoords && endCoords && center.length !== 0) {
-        console.log("center i if statement"+center);
-        console.log(bottomLeftPoint, bottomRightPoint, topLeftPoint, topRightPoint);
-        let radius = 1; //in km
+        L.circle([center[1],center[0]], { color: "orange", radius:500 }).addTo(map);
+        
+        let radius = 0.5; //in km
         topLeftPoint = [center[0] - radius / 110, center[1] - radius / 110];
         topRightPoint = [center[0] + radius / 110, center[1] - radius / 110];
         bottomLeftPoint = [
@@ -274,7 +268,7 @@ const MapLeaf = () => {
 
         //round to 3 decimal places
         topLeftPoint = [topLeftPoint[0].toFixed(3), topLeftPoint[1].toFixed(3)];
-        topRightPoint = [topRightPoint[0].toFixed(3), topRightPoint[1].toFixed(3)];
+        topRightPoint = [topRightPoint[0].toFixed(3), topRightPoint[1].toFixed(3)];        // %5B%5B<>%2C<>%5D%2C%5B%5B    
         bottomLeftPoint = [
           bottomLeftPoint[0].toFixed(3),
           bottomLeftPoint[1].toFixed(3),
@@ -284,8 +278,19 @@ const MapLeaf = () => {
           bottomRightPoint[1].toFixed(3),
         ];
 
-        const url = `https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World/solve?returnPolygonBarriers=true&outSR=4326&f=json&polygonBarriers=%7B%22features%22%3A%5B%7B%22geometry%22%3A%7B%22rings%22%3A%5B%5B%5B${topLeftPoint[0]}%2C${topLeftPoint[1]}%5D%2C%5B${topRightPoint[0]}%2C${topRightPoint[1]}%5D%2C%5B${bottomRightPoint[0]}%2C${bottomRightPoint[1]}%5D%2C%5B${bottomLeftPoint[0]}%2C${bottomLeftPoint[1]}%5D%5D%5D%7D%2C%22attributes%22%3A%7B%22Name%22%3A%22Flood%20zone%22%2C%22BarrierType%22%3A0%7D%7D%5D%7D&token=AAPK3c3f7569a5364ebf989232a728f5cbbbD0PGCXGZqbFvXv3e1oUb76gUENrlq1_yhMDPKhunJRKWbLKb2OdXPodGKWPO3UkL&stops=${startCoords[0]},${startCoords[1]};${endCoords[0]},${endCoords[1]}&startTime=now&returnDirections=true`;
+        count += 1;
+        if(encode_string != ''){
+          encode_string += `%2C%7B%22geometry%22%3A%7B%22rings%22%3A%5B%5B%5B${topLeftPoint[0]}%2C${topLeftPoint[1]}%5D%2C%5B${topRightPoint[0]}%2C${topRightPoint[1]}%5D%2C%5B${bottomRightPoint[0]}%2C${bottomRightPoint[1]}%5D%2C%5B${bottomLeftPoint[0]}%2C${bottomLeftPoint[1]}%5D%5D%5D%7D%2C%22attributes%22%3A%7B%22Name%22%3A%22Flood%20zone${count}%22%2C%22BarrierType%22%3A0%7D%7D`
+        }
+        else{
+          encode_string += `%7B%22geometry%22%3A%7B%22rings%22%3A%5B%5B%5B${topLeftPoint[0]}%2C${topLeftPoint[1]}%5D%2C%5B${topRightPoint[0]}%2C${topRightPoint[1]}%5D%2C%5B${bottomRightPoint[0]}%2C${bottomRightPoint[1]}%5D%2C%5B${bottomLeftPoint[0]}%2C${bottomLeftPoint[1]}%5D%5D%5D%7D%2C%22attributes%22%3A%7B%22Name%22%3A%22Flood%20zone%22%2C%22BarrierType%22%3A0%7D%7D`
+        }
+      }
+      
+      if (startCoords && endCoords && center.length !== 0) {
+        const url = `https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World/solve?returnPolygonBarriers=true&outSR=4326&f=json&polygonBarriers=%7B%22features%22%3A%5B${encode_string}%5D%7D&token=AAPK3c3f7569a5364ebf989232a728f5cbbbD0PGCXGZqbFvXv3e1oUb76gUENrlq1_yhMDPKhunJRKWbLKb2OdXPodGKWPO3UkL&stops=${startCoords[0]},${startCoords[1]};${endCoords[0]},${endCoords[1]}&startTime=now&returnDirections=true`;
         updateRoute(url);
+
       }
       else if (startCoords && endCoords) {
         const url = `https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World/solve?returnPolygonBarriers=false&outSR=4326&f=json&token=AAPK3c3f7569a5364ebf989232a728f5cbbbD0PGCXGZqbFvXv3e1oUb76gUENrlq1_yhMDPKhunJRKWbLKb2OdXPodGKWPO3UkL&stops=${startCoords[0]},${startCoords[1]};${endCoords[0]},${endCoords[1]}&startTime=now&returnDirections=true`;
@@ -341,7 +346,7 @@ const MapLeaf = () => {
         </div>
       </div>
       <div className = {`flex flex-col absolute top-[20%] mlg:top-[16%] z-20`}>
-        <button onClick={handleRadiusClick}><SideBarIcon Icon={<BsFillRecordCircleFill size="28" />} text="Radius" state={radiusClicked}></SideBarIcon></button>
+        <button onClick={handleRadiusClick}><SideBarIcon Icon={<BsFillRecordCircleFill size="28" />} text="Buffer" state={radiusClicked}></SideBarIcon></button>
       </div>
       
     </div>
