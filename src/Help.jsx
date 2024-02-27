@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from "./style";
-import { Navbar, Profile} from "./components";
+import { FAQPage, Navbar, Profile} from "./components";
 import HelpText from './components/HelpText';
 import VideoPlayer from './components/VideoPlayer';
 
@@ -17,9 +17,9 @@ const Help = () => {
             <VideoPlayer/>
         </div>
       </div>
-      <div className={` ${styles.flexStart}`}>
+      <div className={`p-32 ${styles.flexStart}`}>
         <div className={`${styles.boxWidth}`}>
-            <HelpText/>
+            <FAQPage/>
         </div>
       </div>
     </div>

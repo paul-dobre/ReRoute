@@ -12,6 +12,7 @@ import MapLeaf from "./MapLeaf";
 import MapSidebar from "./MapSidebar";
 import LeafMap from "./LeafMap.jsx";
 import InfoAboutUs from "./InfoAboutUs.jsx";
+import FAQPage from "./FAQPage";
 
 export {
     Navbar,
@@ -28,4 +29,5 @@ export {
     MapSidebar,
     LeafMap,
     InfoAboutUs,
+    FAQPage
 };
