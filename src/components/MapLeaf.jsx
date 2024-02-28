@@ -45,6 +45,8 @@ let bottomLeftPoint;
 let bottomRightPoint;
 let encode_string = '';
 let count = 1;
+let realLat;
+let realLng;
 
 const MapLeaf = () => {
   const [direcArr, setDirecArr] = useState([]);
@@ -64,9 +66,35 @@ const MapLeaf = () => {
   useEffect(() => {
     // Create the map
     const map = L.map("map", { minZoom: 2 }).setView(
-      [51.14215, -114.23333],
+      [51, -114],
       13
     );
+    // let realMarker = L.marker([realLat,realLng]);
+
+     // Real-time Geolocation -----------------------------------------------------------------
+    if(!navigator.geolocation){
+      console.log("browser doesn't support geolocation feature")
+    }
+    else{
+      navigator.geolocation.getCurrentPosition(getPosition)  //call back function
+    }
+
+    function getPosition(position){
+      console.log(position)
+      realLat = position.coords.latitude
+      realLng = position.coords.longitude
+      var accuracy = position.coords.accuracy
+  
+      updateMapView(realLat,realLng)
+    }
+  
+    function updateMapView(lat,lng){
+      map.setView(
+        [lat,lng],
+        13
+      );
+      L.marker([lat,lng]).addTo(map)
+    }
 
     // Add basemap
     const apiKey =
@@ -77,6 +105,8 @@ const MapLeaf = () => {
         attribution: "© OpenStreetMap contributors",
       }
     ).addTo(map);
+    
+    // var featureGroup = L.featureGroup([realMarker]).addTo(map)
     
     let currentStep = "start";
    
@@ -96,30 +126,12 @@ const MapLeaf = () => {
 
     const startLayerGroup = L.layerGroup().addTo(map);
 
-    
-    // Real-time Geolocation 
-    if(!navigator.geolocation){
-      console.log("browser doesn't support geolocation feature")
-    }
-    else{
-      navigator.geolocation.getCurrentPosition(getPosition)  //call back function
-    }
-
-    function getPosition(position){
-      console.log(position)
-      var moveLat = position.coords.latitude
-      var moveLon = position.coords.longitude
-      var accuracy = position.coords.accuracy
-    }
-
     const updateRoute = async (url) => {
       const authentication = ApiKeyManager.fromKey(apiKey);
       console.log("radius")
       console.log(radiusClicked)
 
     
-
-      //Buffer Radius
       try {
         const response = await fetch(url);
 
@@ -186,7 +198,7 @@ const MapLeaf = () => {
       
 
         let polyline = L.polyline(coords, { 
-          color: "red", 
+          color: "blue", 
           weight: 5,
           opacity: 1, 
         }).addTo(map);
@@ -216,6 +228,7 @@ const MapLeaf = () => {
       }
     };
 
+    //Geocoding -----------------------------------------------------------------
     geocode1.on("markgeocode", function (e) {
       startLayerGroup.clearLayers();
 
@@ -248,7 +261,7 @@ const MapLeaf = () => {
       }
     });
     
-    // click on map
+    // click on map----------------------------------------------------------
     map.on("click", (e) => {
       const coordinates = [e.latlng.lng, e.latlng.lat];
 
