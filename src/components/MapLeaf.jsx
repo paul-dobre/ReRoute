@@ -89,7 +89,7 @@ const MapLeaf = () => {
     }
   
     function updateMapView(lat,lng){
-      map.setView(
+      map.flyTo(
         [lat,lng],
         13
       );
