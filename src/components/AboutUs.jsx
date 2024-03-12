@@ -1,8 +1,11 @@
 import React from 'react';
 import styles from "../style";
 import { TypeAnimation } from 'react-type-animation';
+import { useNavigate } from 'react-router-dom';
 
 const AboutUs = () => {
+
+    const navigate = useNavigate();
 
     const handleStartRouting = () => {
       navigate('/startrouting');
